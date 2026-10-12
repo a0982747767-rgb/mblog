@@ -1,0 +1,165 @@
+{% extends 'base.html' %}
+
+
+{% block title %}
+二手車賣場
+{% endblock %}
+
+
+{% block headmessage %}
+
+<h3 style="font-family:微軟正黑體;">
+    DJ 二手車賣場
+</h3>
+
+{% endblock %}
+
+
+{% block content %}
+
+
+<h3 style="font-family:微軟正黑體;">
+    歡迎光臨 DJ 二手車賣場
+</h3>
+
+
+<p>
+    請選擇要查看的車廠：
+</p>
+
+
+<hr>
+
+
+<!-- ============================= -->
+<!-- 車廠選擇 -->
+<!-- ============================= -->
+
+<div class="d-flex flex-wrap gap-2 mb-4">
+
+    {% for m in car_maker %}
+
+        {% if forloop.counter0 == maker %}
+
+            <a
+                href="{% url 'carlist-url' forloop.counter0 %}"
+                class="btn btn-primary"
+            >
+                {{ m }}
+            </a>
+
+        {% else %}
+
+            <a
+                href="{% url 'carlist-url' forloop.counter0 %}"
+                class="btn btn-outline-primary"
+            >
+                {{ m }}
+            </a>
+
+        {% endif %}
+
+    {% endfor %}
+
+</div>
+
+
+<hr>
+
+
+<!-- ============================= -->
+<!-- 目前選擇 -->
+<!-- ============================= -->
+
+<h4>
+    目前選擇：{{ maker_name }}
+</h4>
+
+
+<br>
+
+
+<!-- ============================= -->
+<!-- 有庫存時 -->
+<!-- ============================= -->
+
+{% if cars %}
+
+
+<table class="table table-bordered">
+
+    <thead>
+
+        <tr class="table-success">
+
+            <th>
+                車廠
+            </th>
+
+            <th>
+                車款
+            </th>
+
+        </tr>
+
+    </thead>
+
+
+    <tbody>
+
+        {% for c in cars %}
+
+        <tr class="{% cycle 'table-light' 'table-secondary' %}">
+
+            <td>
+                {{ maker_name }}
+            </td>
+
+            <td>
+                {{ c }}
+            </td>
+
+        </tr>
+
+        {% endfor %}
+
+    </tbody>
+
+</table>
+
+
+<!-- ============================= -->
+<!-- 沒有庫存時 -->
+<!-- ============================= -->
+
+{% else %}
+
+
+<div class="alert alert-warning">
+
+    車廠
+
+    <strong>
+        {{ maker_name }}
+    </strong>
+
+    目前無庫存車
+
+</div>
+
+
+{% endif %}
+
+
+<hr>
+
+
+<a
+    href="/"
+    class="btn btn-secondary"
+>
+    回首頁
+</a>
+
+
+{% endblock %}

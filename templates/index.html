@@ -1,44 +1,216 @@
 {% extends 'base.html' %}
 {% load markdown_extras %}
 
+
 {% block title %}
+
+{% if tv %}
+新聞直播
+{% else %}
 歡迎光臨我的部落格
+{% endif %}
+
 {% endblock %}
+
 
 
 {% block headmessage %}
+
+{% if tv %}
+
+<h3 style="font-family:微軟正黑體;">
+    新聞直播｜中天、華視、民視、中視
+</h3>
+
+{% else %}
+
 <h3 style="font-family:標楷體;">
     本站文章列表
 </h3>
+
+{% endif %}
+
 {% endblock %}
+
 
 
 {% block content %}
 
+
+{% if tv %}
+
+<!-- ============================= -->
+<!-- 新聞直播區 -->
+<!-- ============================= -->
+
+<section id="news-live"
+         style="font-family:微軟正黑體;">
+
+    <h4 class="mb-3">
+        選擇新聞台
+    </h4>
+
+
+    <div class="d-flex flex-wrap gap-2 mb-3">
+
+        {% for channel in tv_list %}
+
+            {% if forloop.counter0 == tvno %}
+
+                <a href="{% url 'news-live' forloop.counter0 %}"
+                   class="btn btn-primary">
+
+                    {{ channel.name }}
+
+                </a>
+
+            {% else %}
+
+                <a href="{% url 'news-live' forloop.counter0 %}"
+                   class="btn btn-outline-primary">
+
+                    {{ channel.name }}
+
+                </a>
+
+            {% endif %}
+
+        {% endfor %}
+
+    </div>
+
+
+    <h5 class="mb-3">
+
+        目前選擇：
+        {{ tv.name }}新聞
+
+    </h5>
+
+
+    <!-- YouTube 播放器 -->
+
+    <div class="ratio ratio-16x9 bg-dark">
+
+        <iframe
+            src="https://www.youtube.com/embed/{{ tv.tvcode }}?playsinline=1"
+            title="{{ tv.name }} YouTube 新聞直播"
+            loading="lazy"
+            referrerpolicy="strict-origin-when-cross-origin"
+            allow="autoplay; encrypted-media; picture-in-picture; fullscreen"
+            allowfullscreen>
+        </iframe>
+
+    </div>
+
+
+    <p class="mt-3">
+
+        若影片無法播放、直播結束或出現 Error 153，
+
+        <a href="https://www.youtube.com/watch?v={{ tv.tvcode }}"
+           target="_blank"
+           rel="noopener noreferrer">
+
+            前往 YouTube 直接觀看
+
+        </a>
+
+    </p>
+
+
+    <p>
+
+        <a href="{{ tv.official_url }}"
+           target="_blank"
+           rel="noopener noreferrer">
+
+            {{ tv.name }}官方網站
+
+        </a>
+
+    </p>
+
+
+    <small class="text-muted">
+
+        直播影片代碼可能變更，
+        且是否允許嵌入由 YouTube 及頻道決定。
+
+    </small>
+
+
+</section>
+
+
+<hr class="my-4">
+
+{% endif %}
+
+
+
+<!-- ============================= -->
+<!-- 首頁功能按鈕 -->
+<!-- ============================= -->
+
 <div class="mb-3">
-    <a href="/list/" class="btn btn-primary">
+
+    <a href="/list/"
+       class="btn btn-primary">
+
         二手列表
+
     </a>
 
-    <a href="/about/" class="btn btn-secondary">
+
+    <a href="/about/"
+       class="btn btn-secondary">
+
         關於我
+
     </a>
+
+
+    <a href="/news/"
+       class="btn btn-danger">
+
+        新聞直播
+
+    </a>
+
 </div>
+
 
 <hr>
 
+
+
+<!-- ============================= -->
+<!-- 原本的部落格文章 -->
+<!-- ============================= -->
+
+<h4 style="font-family:標楷體;">
+    本站文章列表
+</h4>
+
+
 {% for post in posts %}
 
-<div class="card">
+<div class="card mb-3">
 
     <div class="card-header">
 
-        <p style="font-family:微軟正黑體;
-                  font-size:14pt;
-                  font-weight:bold;">
+        <p style="
+            font-family:微軟正黑體;
+            font-size:14pt;
+            font-weight:bold;
+            margin-bottom:0;
+        ">
 
             <a href="/post/{{ post.slug }}/">
+
                 {{ post.title }}
+
             </a>
 
         </p>
@@ -49,7 +221,11 @@
     <div class="card-body"
          style="background-color:#ffffdd;">
 
-        {{ post.body | truncatechars:80 | convert_markdown | safe }}
+        {{ post.body
+            | truncatechars:80
+            | convert_markdown
+            | safe
+        }}
 
     </div>
 
@@ -57,17 +233,21 @@
     <div class="card-footer"
          style="background-color:#efefef;">
 
-        <p>
-            發佈時間：
-            {{ post.pub_date | date:"Y M d, H:i:s" }}
-        </p>
+        發佈時間：
+
+        {{ post.pub_date | date:"Y M d, H:i:s" }}
 
     </div>
 
 </div>
 
-<br>
+{% empty %}
+
+<p>
+    目前沒有文章。
+</p>
 
 {% endfor %}
+
 
 {% endblock %}

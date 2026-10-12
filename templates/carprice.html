@@ -1,0 +1,153 @@
+{% extends 'base.html' %}
+
+{% load humanize %}
+
+
+{% block title %}
+二手車價格表
+{% endblock %}
+
+
+{% block headmessage %}
+
+<h3 style="font-family:微軟正黑體;">
+    二手車價格列表
+</h3>
+
+{% endblock %}
+
+
+{% block content %}
+
+
+<h3 style="font-family:微軟正黑體;">
+    二手車價格查詢
+</h3>
+
+
+<p>
+    請選擇車廠：
+</p>
+
+
+<hr>
+
+
+<!-- ========================= -->
+<!-- 車廠選擇按鈕 -->
+<!-- ========================= -->
+
+<div class="d-flex flex-wrap gap-2 mb-4">
+
+    {% for m in car_maker %}
+
+        {% if forloop.counter0 == maker %}
+
+            <a
+                href="{% url 'carprice-url' forloop.counter0 %}"
+                class="btn btn-primary"
+            >
+                {{ m }}
+            </a>
+
+        {% else %}
+
+            <a
+                href="{% url 'carprice-url' forloop.counter0 %}"
+                class="btn btn-outline-primary"
+            >
+                {{ m }}
+            </a>
+
+        {% endif %}
+
+    {% endfor %}
+
+</div>
+
+
+<hr>
+
+
+<h4>
+    目前選擇：{{ maker_name }}
+</h4>
+
+
+<br>
+
+
+<!-- ========================= -->
+<!-- 價格列表 -->
+<!-- ========================= -->
+
+<table class="table table-bordered">
+
+    <thead>
+
+        <tr class="table-success">
+
+            <th>
+                車廠
+            </th>
+
+            <th>
+                車款
+            </th>
+
+            <th>
+                二手售價
+            </th>
+
+        </tr>
+
+    </thead>
+
+
+    <tbody>
+
+        {% for c in cars %}
+
+        <tr class="{% cycle 'table-light' 'table-secondary' %}">
+
+            <td>
+
+                {{ maker_name }}
+
+            </td>
+
+
+            <td>
+
+                {{ c.model }}
+
+            </td>
+
+
+            <td class="text-end">
+
+                NT${{ c.price | floatformat:2 | intcomma }}
+
+            </td>
+
+        </tr>
+
+        {% endfor %}
+
+    </tbody>
+
+</table>
+
+
+<hr>
+
+
+<a
+    href="/"
+    class="btn btn-secondary"
+>
+    回首頁
+</a>
+
+
+{% endblock %}
