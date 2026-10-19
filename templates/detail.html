@@ -1,0 +1,112 @@
+{% extends 'base.html' %}
+
+
+{% block title %}
+{{ product.nickname|default:"找不到指定的手機" }}
+{% endblock %}
+
+
+{% block headmessage %}
+
+<h3 style="font-family:微軟正黑體;">
+    商品詳細資料
+</h3>
+
+{% endblock %}
+
+
+{% block content %}
+
+
+<div class="container text-center">
+
+
+{% if product %}
+
+
+    <h3>
+        {{ product.nickname }}
+    </h3>
+
+
+    <hr>
+
+
+    <p>
+        {{ product.description }}
+    </p>
+
+
+    <p>
+        西元 {{ product.year }} 年出廠
+    </p>
+
+
+    <p>
+        售價：NT${{ product.price }} 元
+    </p>
+
+
+    <hr>
+
+
+    {% for image in images %}
+
+        <div class="mb-3">
+
+            <img
+                src="{{ image.url }}"
+                width="350"
+                alt="{{ image.description }}"
+            >
+
+            <br>
+
+            {{ image.description }}
+
+        </div>
+
+
+    {% empty %}
+
+        <p>
+            暫無圖片
+        </p>
+
+    {% endfor %}
+
+
+    <hr>
+
+
+    <a
+        href="/market/"
+        class="btn btn-secondary"
+    >
+        回商品列表
+    </a>
+
+
+{% else %}
+
+
+    <h2>
+        找不到指定的手機
+    </h2>
+
+
+    <a
+        href="/market/"
+        class="btn btn-secondary"
+    >
+        回商品列表
+    </a>
+
+
+{% endif %}
+
+
+</div>
+
+
+{% endblock %}

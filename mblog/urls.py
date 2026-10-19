@@ -1,5 +1,7 @@
 from django.contrib import admin
 from django.urls import path
+from django.conf import settings
+from django.conf.urls.static import static
 
 from mysite.views import (
     homepage,
@@ -12,6 +14,8 @@ from mysite.views import (
     carprice,
 )
 
+from market import views as market_views
+
 
 urlpatterns = [
 
@@ -21,14 +25,12 @@ urlpatterns = [
         admin.site.urls
     ),
 
-
-    # 首頁
+    # 原本首頁
     path(
         '',
         homepage,
         name='home'
     ),
-
 
     # 部落格文章
     path(
@@ -37,7 +39,6 @@ urlpatterns = [
         name='show-post'
     ),
 
-
     # 關於我
     path(
         'about/',
@@ -45,8 +46,7 @@ urlpatterns = [
         name='about'
     ),
 
-
-    # 二手手機
+    # 原本二手商品
     path(
         'list/',
         listing,
@@ -58,7 +58,6 @@ urlpatterns = [
         disp_detail,
         name='product-detail'
     ),
-
 
     # 新聞直播
     path(
@@ -73,7 +72,6 @@ urlpatterns = [
         name='news-live'
     ),
 
-
     # 二手車庫存
     path(
         'carlist/',
@@ -87,7 +85,6 @@ urlpatterns = [
         name='carlist-url'
     ),
 
-
     # 二手車價格
     path(
         'carprice/',
@@ -100,4 +97,22 @@ urlpatterns = [
         carprice,
         name='carprice-url'
     ),
-]
+
+    # Unit 6 中古手機賣場
+    path(
+        'market/',
+        market_views.index,
+        name='market-home'
+    ),
+
+    # Unit 6 商品詳細頁
+    path(
+        'detail/<int:id>',
+        market_views.detail,
+        name='detail-url'
+    ),
+
+] + static(
+    settings.MEDIA_URL,
+    document_root=settings.MEDIA_ROOT
+)

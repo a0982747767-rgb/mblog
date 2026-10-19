@@ -1,0 +1,108 @@
+{% extends 'base.html' %}
+
+
+{% block title %}
+DJ中古機賣場
+{% endblock %}
+
+
+{% block headmessage %}
+
+<h3 style="font-family:微軟正黑體;">
+    DJ中古機賣場
+</h3>
+
+{% endblock %}
+
+
+{% block content %}
+
+<h3>
+    中古手機商品列表
+</h3>
+
+<hr>
+
+
+{% for p in products %}
+
+    {% if forloop.first %}
+
+    <table class="table table-bordered">
+
+        <thead>
+
+            <tr class="table-secondary">
+
+                <th>
+                    庫存手機
+                </th>
+
+                <th>
+                    廠牌 / 型號
+                </th>
+
+                <th>
+                    出廠年
+                </th>
+
+                <th>
+                    價格
+                </th>
+
+            </tr>
+
+        </thead>
+
+        <tbody>
+
+    {% endif %}
+
+
+        <tr class="{% cycle 'table-light' 'table-success' %}">
+
+            <td>
+
+                <a href="{% url 'detail-url' p.id %}">
+                    {{ p.nickname }}
+                </a>
+
+            </td>
+
+
+            <td>
+                {{ p.pmodel.maker.name }} / {{ p.pmodel }}
+            </td>
+
+
+            <td>
+                {{ p.year }}
+            </td>
+
+
+            <td class="text-end">
+                NT${{ p.price }}
+            </td>
+
+        </tr>
+
+
+    {% if forloop.last %}
+
+        </tbody>
+
+    </table>
+
+    {% endif %}
+
+
+{% empty %}
+
+<h3>
+    目前沒有庫存的中古機可以賣，真抱歉
+</h3>
+
+{% endfor %}
+
+
+{% endblock %}

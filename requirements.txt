@@ -1,6 +1,7 @@
 asgiref==3.12.1
-Django==5.2.17
+Django==4.2.30
 Markdown==3.10.3
+mysqlclient==2.3.0
 packaging==26.3
 pip==26.2.1
 setuptools==83.0.0
